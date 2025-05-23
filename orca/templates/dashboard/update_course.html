@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ course['course_id'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="course_id">Course ID</label>
+    <input name="course_id" id="course_id"
+      value="{{ request.form['course_id'] or course['course_id'] }}" required>
+    <label for="course_name">Course Name</label>
+    <input name="body" id="body" placeholder="{{ request.form['course_name'] or course['course_name'] }}"></input>
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('dashboard.delete_course', id=course['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}

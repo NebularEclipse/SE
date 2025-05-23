@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}New Course{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="course_id">Course ID</label>
+    <input name="course_id" id="course_id" value="{{ request.form['course_id'] }}" required>
+    <label for="course_name">Course Name</label>
+    <input name="course_name" id="course_name" value="{{ request.form['course_name'] }}" required>
+    <input type="submit" value="Save">
+</form>
+{% endblock %}

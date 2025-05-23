@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Prediction{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% if predictions %}
+{% for p in predictions %}
+<article class="prediction">
+    <header>
+        <div>
+            <h1>{{ p.course }}</h1>
+            <div class="about">
+                {% if p.current_grade is not none %}
+                Current Grade: {{ "%.2f"|format(p.current_grade) }}%
+                {% else %}
+                No assessments yet.
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <p class="body">
+        {% if p.current_grade is not none %}
+        {% if p.remaining > 0 %}
+        {{ "%.0f"|format(p.remaining * 100) }}% of the grade remains unaccounted for.
+        {% else %}
+        All assessments submitted. Final grade is {{ "%.2f"|format(p.current_grade * 100) }}%.
+        {% endif %}
+        {% else %}
+        Start adding assessments to track your progress.
+        {% endif %}
+    </p>
+
+</article>
+
+{% if not loop.last %}
+<hr>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>No courses or assessments found.</p>
+{% endif %}
+{% endblock %}

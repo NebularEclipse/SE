@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Home{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div>
+    <ul>
+        <li><a href="{{ url_for('dashboard.course') }}">Courses</a></li>
+        {% if g.user and g.user_type == 'student' %}
+        <li><a href="{{ url_for('dashboard.assessment') }}">Assessments</a></li>
+        <li><a href="{{ url_for('dashboard.prediction') }}">Prediction</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

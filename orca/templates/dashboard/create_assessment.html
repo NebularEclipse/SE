@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}New Assesment{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="course_id">Course</label>
+    <select name="course_id" id="course_id" required>
+        <option value="" selected disabled>Select a course</option>
+        {% for course in courses %}
+        <option value="{{ course['course_id'] }}">{{ course['course_name'] }}</option>
+        {% endfor %}
+    </select>
+    <label for="name">Type</label>
+    <select name="name" id="name" required>
+        <option value="" selected disabled>Select a type</option>
+        <option value="quiz">Quiz</option>
+        <option value="lt">Learning Task</option>
+        <option value="attendance">Attendance</option>
+        <option value="class-participation">Class Participation</option>
+        <option value="project">Project</option>
+        <option value="exam">Exam</option>
+    </select>
+    <label for="weight">Weight</label>
+    <input type="number" name="weight" id="weight" min="0" max="1" step="0.01" required>
+    <label for="score">Score</label>
+    <input type="number" name="score" id="score" min="0" max="100" step="1" required>
+    <input type="submit" value="Save">
+</form>
+{% endblock %}

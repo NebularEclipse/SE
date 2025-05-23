@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="user_type">Register as</label>
+    <select name="user_type" id="user_type" required onchange="toggleFields()">
+        <option value="" disabled selected>Select user type</option>
+        <option value="student">Student</option>
+        <option value="admin">Admin</option>
+    </select>
+
+    <!-- Student Fields -->
+    <div id="student_fields" style="display: none;">
+        <label for="student_id">Student ID</label>
+        <input name="student_id" id="student_id">
+
+        <label for="name">Name</label>
+        <input name="name" id="name">
+
+        <label for="email">Email</label>
+        <input name="email" id="email">
+    </div>
+
+    <!-- Admin Fields -->
+    <div id="admin_fields" style="display: none;">
+        <label for="username">Username</label>
+        <input name="username" id="username">
+    </div>
+
+    <!-- Common Field -->
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <input type="submit" value="Register">
+</form>
+
+<script>
+    function toggleFields() {
+        const userType = document.getElementById('user_type').value;
+        const studentFields = document.getElementById('student_fields');
+        const adminFields = document.getElementById('admin_fields');
+
+        studentFields.style.display = userType === 'student' ? 'block' : 'none';
+        adminFields.style.display = userType === 'admin' ? 'block' : 'none';
+    }
+
+    // Optional: call toggleFields on page load in case of form error re-render
+    window.onload = toggleFields;
+</script>
+{% endblock %}
