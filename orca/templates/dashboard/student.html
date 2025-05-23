@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Students{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for student in students %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ student['name'] }}</h1>
+          <div class="about">{{ student['email'] }}</div>
+        </div>
+        {% if g.user and g.user_type == 'admin' %}
+          <a class="action" href="{{ url_for('dashboard.update_student', id=student['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

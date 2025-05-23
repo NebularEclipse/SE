@@ -4,6 +4,8 @@ from werkzeug.exceptions import abort
 from orca.auth import login_required, admin_required, student_required
 from orca.db import get_db
 
+from orca.validator import is_valid_email
+
 bp = Blueprint("dashboard", __name__)
 
 
@@ -248,3 +250,67 @@ def prediction():
     print(predictions)
 
     return render_template("dashboard/prediction.html", predictions=predictions)
+
+
+@bp.route("/student")
+@admin_required
+def student():
+    db = get_db()
+    students = db.execute("SELECT *" " FROM student" " ORDER BY name DESC").fetchall()
+    return render_template("dashboard/student.html", students=students)
+
+
+def get_student(id, check_author=True):
+    student = (
+        get_db().execute("SELECT *" " FROM student" " WHERE id = ?", (id,)).fetchone()
+    )
+
+    if student is None:
+        abort(404, f"Student id {id} doesn't exist.")
+
+    if check_author and g.user_type != "admin":
+        abort(403)
+
+    return student
+
+
+@bp.route("/<int:id>/update_student", methods=("GET", "POST"))
+@admin_required
+def update_student(id):
+    student = get_student(id)
+
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+
+        error = None
+
+        if not name:
+            error = "Name is required."
+        elif not email:
+            error = "Email is required."
+        elif not is_valid_email(email):
+            error = "Email is invalid."
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "UPDATE student SET name = ?, email = ?" " WHERE id = ?",
+                (name, email, id),
+            )
+            db.commit()
+            return redirect(url_for("dashboard.student"))
+
+    return render_template("dashboard/update_student.html", student=student)
+
+
+@bp.route("/<int:id>/delete_student", methods=("POST",))
+@login_required
+def delete_student(id):
+    get_student(id)
+    db = get_db()
+    db.execute("DELETE FROM student WHERE id = ?", (id,))
+    db.commit()
+    return redirect(url_for("dashboard.student"))

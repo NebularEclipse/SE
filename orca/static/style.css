@@ -135,3 +135,11 @@ input[type=submit] {
     align-self: start;
     min-width: 10em;
 }
+
+.home-nav ul {
+    list-style: none;
+}
+
+.home-nav a {
+    text-decoration: none;
+}

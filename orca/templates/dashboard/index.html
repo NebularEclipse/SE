@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<div>
+<div class="home-nav">
     <ul>
         <li><a href="{{ url_for('dashboard.course') }}">Courses</a></li>
         {% if g.user and g.user_type == 'student' %}
         <li><a href="{{ url_for('dashboard.assessment') }}">Assessments</a></li>
         <li><a href="{{ url_for('dashboard.prediction') }}">Prediction</a></li>
+        {% endif %}
+        {% if g.user and g.user_type == 'admin' %}
+        <li><a href="{{ url_for('dashboard.student') }}">Students</a></li>
         {% endif %}
     </ul>
 </div>

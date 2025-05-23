@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ student['name'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Name</label>
+    <input name="name" id="name"
+      value="{{ request.form['name'] or student['name'] }}" required>
+    <label for="email">Email</label>
+    <input name="email" id="email"
+      value="{{ request.form['email'] or student['email'] }}" required>
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('dashboard.delete_student', id=student['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
