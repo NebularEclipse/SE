@@ -10,7 +10,7 @@
     <input name="course_id" id="course_id"
       value="{{ request.form['course_id'] or course['course_id'] }}" required>
     <label for="course_name">Course Name</label>
-    <input name="body" id="body" placeholder="{{ request.form['course_name'] or course['course_name'] }}"></input>
+    <input name="course_name" id="course_name" placeholder="{{ request.form['course_name'] or course['course_name'] }}"></input>
     <input type="submit" value="Save">
   </form>
   <hr>
